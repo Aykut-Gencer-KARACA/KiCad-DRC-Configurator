@@ -1,0 +1,18 @@
+# Build output: the exe is published as a GitHub Release asset
+/KiCad DRC.exe
+Development/Source/obj/
+
+# Created by the app at run time (settings, JLC part cache, KiCad template backup, project backups)
+/Data/
+
+# Personal: local KiCad configuration copy and the assistant's working notes
+/KiCad Settings/
+Development/PROJECT_NOTES.md
+
+# Copies of JLCPCB web pages (their content belongs to JLCPCB; links are in Reference Data/SOURCES.txt)
+Development/Reference Data/*.html
+Development/Reference Data/jlcpcb-*.txt
+
+# Test runs
+/DRC_test/
+*.lck

@@ -1,0 +1,31 @@
+KiCad DRC Configurator - "Apply to existing project" test report
+Date: 2026-09-26
+Test project: copy of BLDC Driver RevC (6 layers, 108 footprints, 49 tracks, 24 vias, 9 zones)
+The real project files were not touched; all tests were run on copies.
+
+Scenario                                                  Result
+---------------------------------------------------------------------------------------------
+6 -> 6 (apply JLC settings)                               OK  stackup JLC06161H-3313, 12 rules updated
+  Changes in .kicad_pro                                   OK  only rules (12), track_widths (7), via_dimensions (2);
+                                                              net classes, severities, schematic settings unchanged
+  .kicad_pcb (outside general/layers/setup)               OK  all 488100 characters identical
+  DRC before -> after                                     OK  4 errors -> 7 errors (the JLC rules found 3 new errors)
+6 -> 8                                                    OK  In5.Cu, In6.Cu added; item counts unchanged; KiCad opened it
+8 -> 6                                                    OK  empty In5/In6 removed; item counts unchanged
+6 -> 2                                                    OK  empty In1-In4 removed; item counts unchanged
+2 -> 6                                                    OK  In1-In4 added; item counts unchanged
+Drawings after all round trips                            OK  identical to the original (488100 characters)
+Track on In1.Cu, 6 -> 8 -> 6                              OK  the track stayed on In1.Cu
+Track on In4.Cu, 6 -> 4                                   OK  refused ("In4.Cu: 1 item"), not a single byte of the file changed
+Project open in KiCad (lock file)                         OK  refused
+User's own .kicad_dru rule + 2 updates                    OK  user rule kept, a single app block, placed before it
+Windows (CRLF) line endings in the PCB                    OK  all 23149 lines stayed CRLF; KiCad opened it
+End to end from the window (button -> file -> confirm)    OK  2.5 s; "before 4 errors -> now 7 errors" banner
+
+Also: a .kicad_dru with "# ..." comment lines gave the same violations in KiCad (40 violations, 15 rule names) - comments are safe.
+
+Version 2.2 (same day): the update result of the new English code base is identical to version 2.1 on a RevC copy
+(.kicad_pcb, .kicad_pro and the rules in .kicad_dru); the block written by 2.1 with Turkish markers is recognised and replaced.
+
+Developer tool: Source\compare-project.js
+  node compare-project.js before.kicad_pro after.kicad_pro before.kicad_pcb after.kicad_pcb

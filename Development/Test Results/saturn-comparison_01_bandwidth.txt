@@ -1,0 +1,278 @@
+﻿Calculator 1 - Bandwidth & max conductor length: parallel check against Saturn PCB Toolkit 8.47
+Date: 2026-09-27 11:42
+
+Formulas (see Calculators\Bandwidth\BandwidthMath.cs):
+  bandwidth f = 0.35 / tr;  v = c / sqrt(Er_eff);  Sr = tr * v;  L_ipc = k * Sr;  lambda = c / f;  L_freq = lambda / n
+  stripline Er_eff = Er;  microstrip Er_eff = 0.475 * Er + 0.67 (Motorola MECL handbook / IPC closed form)
+  Saturn uses 0.457 * Er + 0.67 for microstrip (digits swapped). Column "compat" recomputes with 0.457 and must match Saturn;
+  column "ours" uses 0.475; delta = ours vs Saturn. Only the microstrip IPC-2251 length differs.
+  Saturn also multiplies the wavelength by 1/n rounded to 6 digits (1/7 = 0.142857); ours divides exactly (difference < 0.0002 %).
+
+     case                                         value                        Saturn         compat           ours    delta
+OK   FR-4 STD, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   FR-4 STD, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length IPC in           0.17722        0.17722        0.17463    -1.46%
+OK   FR-4 STD, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   FR-4 STD, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  max length IPC in           1.77221        1.77221        1.74632    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   FR-4 STD, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length IPC in           4.43052        4.43052        4.36580    -1.46%
+OK   FR-4 STD, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   FR-4 STD, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   FR-4 STD, microstrip, tr 10 ns, 0.25 Sr, 1/7 bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   FR-4 STD, microstrip, tr 10 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 10 ns, 0.25 Sr, 1/7 max length IPC in          17.72208       17.72208       17.46320    -1.46%
+OK   FR-4 STD, microstrip, tr 10 ns, 0.25 Sr, 1/7 wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   FR-4 STD, microstrip, tr 10 ns, 0.25 Sr, 1/7 max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   FR-4 STD, stripline, tr 0.1 ns, 0.25 Sr, 1/7 bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   FR-4 STD, stripline, tr 0.1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 0.1 ns, 0.25 Sr, 1/7 max length IPC in           0.13758        0.13758        0.13758     0.00%
+OK   FR-4 STD, stripline, tr 0.1 ns, 0.25 Sr, 1/7 wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   FR-4 STD, stripline, tr 0.1 ns, 0.25 Sr, 1/7 max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   FR-4 STD, stripline, tr 1 ns, 0.25 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, stripline, tr 1 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 1 ns, 0.25 Sr, 1/7   max length IPC in           1.37578        1.37578        1.37578     0.00%
+OK   FR-4 STD, stripline, tr 1 ns, 0.25 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, stripline, tr 1 ns, 0.25 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, stripline, tr 2.5 ns, 0.25 Sr, 1/7 bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   FR-4 STD, stripline, tr 2.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 2.5 ns, 0.25 Sr, 1/7 max length IPC in           3.43944        3.43944        3.43944     0.00%
+OK   FR-4 STD, stripline, tr 2.5 ns, 0.25 Sr, 1/7 wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   FR-4 STD, stripline, tr 2.5 ns, 0.25 Sr, 1/7 max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   FR-4 STD, stripline, tr 10 ns, 0.25 Sr, 1/7  bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   FR-4 STD, stripline, tr 10 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 10 ns, 0.25 Sr, 1/7  max length IPC in          13.75777       13.75777       13.75777     0.00%
+OK   FR-4 STD, stripline, tr 10 ns, 0.25 Sr, 1/7  wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   FR-4 STD, stripline, tr 10 ns, 0.25 Sr, 1/7  max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   RO4350B, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   RO4350B, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length IPC in           0.19279        0.19279        0.19013    -1.38%
+OK   RO4350B, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   RO4350B, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   RO4350B, microstrip, tr 1 ns, 0.25 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   RO4350B, microstrip, tr 1 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, microstrip, tr 1 ns, 0.25 Sr, 1/7   max length IPC in           1.92786        1.92786        1.90131    -1.38%
+OK   RO4350B, microstrip, tr 1 ns, 0.25 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   RO4350B, microstrip, tr 1 ns, 0.25 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   RO4350B, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   RO4350B, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length IPC in           4.81966        4.81966        4.75328    -1.38%
+OK   RO4350B, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   RO4350B, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   RO4350B, microstrip, tr 10 ns, 0.25 Sr, 1/7  bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   RO4350B, microstrip, tr 10 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, microstrip, tr 10 ns, 0.25 Sr, 1/7  max length IPC in          19.27863       19.27863       19.01313    -1.38%
+OK   RO4350B, microstrip, tr 10 ns, 0.25 Sr, 1/7  wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   RO4350B, microstrip, tr 10 ns, 0.25 Sr, 1/7  max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   RO4350B, stripline, tr 0.1 ns, 0.25 Sr, 1/7  bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   RO4350B, stripline, tr 0.1 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, stripline, tr 0.1 ns, 0.25 Sr, 1/7  max length IPC in           0.15424        0.15424        0.15424     0.00%
+OK   RO4350B, stripline, tr 0.1 ns, 0.25 Sr, 1/7  wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   RO4350B, stripline, tr 0.1 ns, 0.25 Sr, 1/7  max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   RO4350B, stripline, tr 1 ns, 0.25 Sr, 1/7    bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   RO4350B, stripline, tr 1 ns, 0.25 Sr, 1/7    speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, stripline, tr 1 ns, 0.25 Sr, 1/7    max length IPC in           1.54236        1.54236        1.54236     0.00%
+OK   RO4350B, stripline, tr 1 ns, 0.25 Sr, 1/7    wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   RO4350B, stripline, tr 1 ns, 0.25 Sr, 1/7    max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   RO4350B, stripline, tr 2.5 ns, 0.25 Sr, 1/7  bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   RO4350B, stripline, tr 2.5 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, stripline, tr 2.5 ns, 0.25 Sr, 1/7  max length IPC in           3.85591        3.85591        3.85591     0.00%
+OK   RO4350B, stripline, tr 2.5 ns, 0.25 Sr, 1/7  wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   RO4350B, stripline, tr 2.5 ns, 0.25 Sr, 1/7  max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   RO4350B, stripline, tr 10 ns, 0.25 Sr, 1/7   bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   RO4350B, stripline, tr 10 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 156704028.10600 156704028.10554 156704028.10554     0.00%
+OK   RO4350B, stripline, tr 10 ns, 0.25 Sr, 1/7   max length IPC in          15.42362       15.42362       15.42362     0.00%
+OK   RO4350B, stripline, tr 10 ns, 0.25 Sr, 1/7   wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   RO4350B, stripline, tr 10 ns, 0.25 Sr, 1/7   max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   RO3010, microstrip, tr 0.1 ns, 0.25 Sr, 1/7  bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   RO3010, microstrip, tr 0.1 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, microstrip, tr 0.1 ns, 0.25 Sr, 1/7  max length IPC in           0.12779        0.12779        0.12565    -1.68%
+OK   RO3010, microstrip, tr 0.1 ns, 0.25 Sr, 1/7  wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   RO3010, microstrip, tr 0.1 ns, 0.25 Sr, 1/7  max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   RO3010, microstrip, tr 1 ns, 0.25 Sr, 1/7    bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   RO3010, microstrip, tr 1 ns, 0.25 Sr, 1/7    speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, microstrip, tr 1 ns, 0.25 Sr, 1/7    max length IPC in           1.27793        1.27793        1.25648    -1.68%
+OK   RO3010, microstrip, tr 1 ns, 0.25 Sr, 1/7    wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   RO3010, microstrip, tr 1 ns, 0.25 Sr, 1/7    max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   RO3010, microstrip, tr 2.5 ns, 0.25 Sr, 1/7  bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   RO3010, microstrip, tr 2.5 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, microstrip, tr 2.5 ns, 0.25 Sr, 1/7  max length IPC in           3.19482        3.19482        3.14119    -1.68%
+OK   RO3010, microstrip, tr 2.5 ns, 0.25 Sr, 1/7  wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   RO3010, microstrip, tr 2.5 ns, 0.25 Sr, 1/7  max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   RO3010, microstrip, tr 10 ns, 0.25 Sr, 1/7   bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   RO3010, microstrip, tr 10 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, microstrip, tr 10 ns, 0.25 Sr, 1/7   max length IPC in          12.77928       12.77928       12.56476    -1.68%
+OK   RO3010, microstrip, tr 10 ns, 0.25 Sr, 1/7   wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   RO3010, microstrip, tr 10 ns, 0.25 Sr, 1/7   max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   RO3010, stripline, tr 0.1 ns, 0.25 Sr, 1/7   bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   RO3010, stripline, tr 0.1 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, stripline, tr 0.1 ns, 0.25 Sr, 1/7   max length IPC in           0.09239        0.09239        0.09239     0.00%
+OK   RO3010, stripline, tr 0.1 ns, 0.25 Sr, 1/7   wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   RO3010, stripline, tr 0.1 ns, 0.25 Sr, 1/7   max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   RO3010, stripline, tr 1 ns, 0.25 Sr, 1/7     bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   RO3010, stripline, tr 1 ns, 0.25 Sr, 1/7     speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, stripline, tr 1 ns, 0.25 Sr, 1/7     max length IPC in           0.92390        0.92390        0.92390     0.00%
+OK   RO3010, stripline, tr 1 ns, 0.25 Sr, 1/7     wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   RO3010, stripline, tr 1 ns, 0.25 Sr, 1/7     max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   RO3010, stripline, tr 2.5 ns, 0.25 Sr, 1/7   bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   RO3010, stripline, tr 2.5 ns, 0.25 Sr, 1/7   speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, stripline, tr 2.5 ns, 0.25 Sr, 1/7   max length IPC in           2.30976        2.30976        2.30976     0.00%
+OK   RO3010, stripline, tr 2.5 ns, 0.25 Sr, 1/7   wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   RO3010, stripline, tr 2.5 ns, 0.25 Sr, 1/7   max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   RO3010, stripline, tr 10 ns, 0.25 Sr, 1/7    bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   RO3010, stripline, tr 10 ns, 0.25 Sr, 1/7    speed c/sqrt(Er) m/s 93868659.74200 93868659.74186 93868659.74186     0.00%
+OK   RO3010, stripline, tr 10 ns, 0.25 Sr, 1/7    max length IPC in           9.23904        9.23904        9.23904     0.00%
+OK   RO3010, stripline, tr 10 ns, 0.25 Sr, 1/7    wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   RO3010, stripline, tr 10 ns, 0.25 Sr, 1/7    max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   Teflon PTFE, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   Teflon PTFE, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length IPC in           0.23114        0.23114        0.22850    -1.14%
+OK   Teflon PTFE, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   Teflon PTFE, microstrip, tr 0.1 ns, 0.25 Sr, 1/7 max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   Teflon PTFE, microstrip, tr 1 ns, 0.25 Sr, 1/7 bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   Teflon PTFE, microstrip, tr 1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, microstrip, tr 1 ns, 0.25 Sr, 1/7 max length IPC in           2.31139        2.31139        2.28504    -1.14%
+OK   Teflon PTFE, microstrip, tr 1 ns, 0.25 Sr, 1/7 wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   Teflon PTFE, microstrip, tr 1 ns, 0.25 Sr, 1/7 max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   Teflon PTFE, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   Teflon PTFE, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length IPC in           5.77847        5.77847        5.71260    -1.14%
+OK   Teflon PTFE, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   Teflon PTFE, microstrip, tr 2.5 ns, 0.25 Sr, 1/7 max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   Teflon PTFE, microstrip, tr 10 ns, 0.25 Sr, 1/7 bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   Teflon PTFE, microstrip, tr 10 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, microstrip, tr 10 ns, 0.25 Sr, 1/7 max length IPC in          23.11390       23.11390       22.85041    -1.14%
+OK   Teflon PTFE, microstrip, tr 10 ns, 0.25 Sr, 1/7 wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   Teflon PTFE, microstrip, tr 10 ns, 0.25 Sr, 1/7 max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   Teflon PTFE, stripline, tr 0.1 ns, 0.25 Sr, 1/7 bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   Teflon PTFE, stripline, tr 0.1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, stripline, tr 0.1 ns, 0.25 Sr, 1/7 max length IPC in           0.20362        0.20362        0.20362     0.00%
+OK   Teflon PTFE, stripline, tr 0.1 ns, 0.25 Sr, 1/7 wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   Teflon PTFE, stripline, tr 0.1 ns, 0.25 Sr, 1/7 max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   Teflon PTFE, stripline, tr 1 ns, 0.25 Sr, 1/7 bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   Teflon PTFE, stripline, tr 1 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, stripline, tr 1 ns, 0.25 Sr, 1/7 max length IPC in           2.03619        2.03619        2.03619     0.00%
+OK   Teflon PTFE, stripline, tr 1 ns, 0.25 Sr, 1/7 wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   Teflon PTFE, stripline, tr 1 ns, 0.25 Sr, 1/7 max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   Teflon PTFE, stripline, tr 2.5 ns, 0.25 Sr, 1/7 bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   Teflon PTFE, stripline, tr 2.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, stripline, tr 2.5 ns, 0.25 Sr, 1/7 max length IPC in           5.09046        5.09046        5.09046     0.00%
+OK   Teflon PTFE, stripline, tr 2.5 ns, 0.25 Sr, 1/7 wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   Teflon PTFE, stripline, tr 2.5 ns, 0.25 Sr, 1/7 max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   Teflon PTFE, stripline, tr 10 ns, 0.25 Sr, 1/7 bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   Teflon PTFE, stripline, tr 10 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 206876450.21600 206876450.21639 206876450.21639     0.00%
+OK   Teflon PTFE, stripline, tr 10 ns, 0.25 Sr, 1/7 max length IPC in          20.36186       20.36186       20.36186     0.00%
+OK   Teflon PTFE, stripline, tr 10 ns, 0.25 Sr, 1/7 wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   Teflon PTFE, stripline, tr 10 ns, 0.25 Sr, 1/7 max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   Air, microstrip, tr 0.1 ns, 0.25 Sr, 1/7     bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   Air, microstrip, tr 0.1 ns, 0.25 Sr, 1/7     speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, microstrip, tr 0.1 ns, 0.25 Sr, 1/7     max length IPC in           0.27795        0.27795        0.27576    -0.79%
+OK   Air, microstrip, tr 0.1 ns, 0.25 Sr, 1/7     wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   Air, microstrip, tr 0.1 ns, 0.25 Sr, 1/7     max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   Air, microstrip, tr 1 ns, 0.25 Sr, 1/7       bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   Air, microstrip, tr 1 ns, 0.25 Sr, 1/7       speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, microstrip, tr 1 ns, 0.25 Sr, 1/7       max length IPC in           2.77949        2.77949        2.75756    -0.79%
+OK   Air, microstrip, tr 1 ns, 0.25 Sr, 1/7       wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   Air, microstrip, tr 1 ns, 0.25 Sr, 1/7       max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   Air, microstrip, tr 2.5 ns, 0.25 Sr, 1/7     bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   Air, microstrip, tr 2.5 ns, 0.25 Sr, 1/7     speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, microstrip, tr 2.5 ns, 0.25 Sr, 1/7     max length IPC in           6.94872        6.94872        6.89389    -0.79%
+OK   Air, microstrip, tr 2.5 ns, 0.25 Sr, 1/7     wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   Air, microstrip, tr 2.5 ns, 0.25 Sr, 1/7     max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   Air, microstrip, tr 10 ns, 0.25 Sr, 1/7      bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   Air, microstrip, tr 10 ns, 0.25 Sr, 1/7      speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, microstrip, tr 10 ns, 0.25 Sr, 1/7      max length IPC in          27.79489       27.79489       27.57555    -0.79%
+OK   Air, microstrip, tr 10 ns, 0.25 Sr, 1/7      wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   Air, microstrip, tr 10 ns, 0.25 Sr, 1/7      max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   Air, stripline, tr 0.1 ns, 0.25 Sr, 1/7      bandwidth MHz            3500.00000     3500.00000     3500.00000     0.00%
+OK   Air, stripline, tr 0.1 ns, 0.25 Sr, 1/7      speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, stripline, tr 0.1 ns, 0.25 Sr, 1/7      max length IPC in           0.29507        0.29507        0.29507     0.00%
+OK   Air, stripline, tr 0.1 ns, 0.25 Sr, 1/7      wavelength air in           3.37224        3.37224        3.37224     0.00%
+OK   Air, stripline, tr 0.1 ns, 0.25 Sr, 1/7      max length freq in          0.48175        0.48175        0.48175     0.00%
+OK   Air, stripline, tr 1 ns, 0.25 Sr, 1/7        bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   Air, stripline, tr 1 ns, 0.25 Sr, 1/7        speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, stripline, tr 1 ns, 0.25 Sr, 1/7        max length IPC in           2.95071        2.95071        2.95071     0.00%
+OK   Air, stripline, tr 1 ns, 0.25 Sr, 1/7        wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   Air, stripline, tr 1 ns, 0.25 Sr, 1/7        max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   Air, stripline, tr 2.5 ns, 0.25 Sr, 1/7      bandwidth MHz             140.00000      140.00000      140.00000     0.00%
+OK   Air, stripline, tr 2.5 ns, 0.25 Sr, 1/7      speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, stripline, tr 2.5 ns, 0.25 Sr, 1/7      max length IPC in           7.37678        7.37678        7.37678     0.00%
+OK   Air, stripline, tr 2.5 ns, 0.25 Sr, 1/7      wavelength air in          84.30609       84.30609       84.30609     0.00%
+OK   Air, stripline, tr 2.5 ns, 0.25 Sr, 1/7      max length freq in         12.04372       12.04372       12.04373     0.00%
+OK   Air, stripline, tr 10 ns, 0.25 Sr, 1/7       bandwidth MHz              35.00000       35.00000       35.00000     0.00%
+OK   Air, stripline, tr 10 ns, 0.25 Sr, 1/7       speed c/sqrt(Er) m/s 299792458.00000 299792458.00000 299792458.00000     0.00%
+OK   Air, stripline, tr 10 ns, 0.25 Sr, 1/7       max length IPC in          29.50713       29.50713       29.50713     0.00%
+OK   Air, stripline, tr 10 ns, 0.25 Sr, 1/7       wavelength air in         337.22436      337.22436      337.22436     0.00%
+OK   Air, stripline, tr 10 ns, 0.25 Sr, 1/7       max length freq in         48.17486       48.17486       48.17491     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.2 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.2 Sr, 1/7   speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.2 Sr, 1/7   max length IPC in           1.41777        1.41777        1.39706    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.2 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.2 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  max length IPC in           1.77221        1.77221        1.74632    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.25 Sr, 1/7  max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.3 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.3 Sr, 1/7   speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.3 Sr, 1/7   max length IPC in           2.12665        2.12665        2.09558    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.3 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.3 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.35 Sr, 1/7  bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.35 Sr, 1/7  speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.35 Sr, 1/7  max length IPC in           2.48109        2.48109        2.44485    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.35 Sr, 1/7  wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.35 Sr, 1/7  max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.4 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.4 Sr, 1/7   speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.4 Sr, 1/7   max length IPC in           2.83553        2.83553        2.79411    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.4 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.4 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.45 Sr, 1/7  bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.45 Sr, 1/7  speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.45 Sr, 1/7  max length IPC in           3.18997        3.18997        3.14338    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.45 Sr, 1/7  wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.45 Sr, 1/7  max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.5 Sr, 1/7   bandwidth MHz             350.00000      350.00000      350.00000     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.5 Sr, 1/7   speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.5 Sr, 1/7   max length IPC in           3.54442        3.54442        3.49264    -1.46%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.5 Sr, 1/7   wavelength air in          33.72244       33.72244       33.72244     0.00%
+OK   FR-4 STD, microstrip, tr 1 ns, 0.5 Sr, 1/7   max length freq in          4.81749        4.81749        4.81749     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/4 bandwidth MHz             700.00000      700.00000      700.00000     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/4 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/4 max length IPC in           0.68789        0.68789        0.68789     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/4 wavelength air in          16.86122       16.86122       16.86122     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/4 max length freq in          4.21530        4.21530        4.21530     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/7 bandwidth MHz             700.00000      700.00000      700.00000     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/7 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/7 max length IPC in           0.68789        0.68789        0.68789     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/7 wavelength air in          16.86122       16.86122       16.86122     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/7 max length freq in          2.40874        2.40874        2.40875     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/10 bandwidth MHz             700.00000      700.00000      700.00000     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/10 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/10 max length IPC in           0.68789        0.68789        0.68789     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/10 wavelength air in          16.86122       16.86122       16.86122     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/10 max length freq in          1.68612        1.68612        1.68612     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/20 bandwidth MHz             700.00000      700.00000      700.00000     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/20 speed c/sqrt(Er) m/s 139778954.28000 139778954.27959 139778954.27959     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/20 max length IPC in           0.68789        0.68789        0.68789     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/20 wavelength air in          16.86122       16.86122       16.86122     0.00%
+OK   FR-4 STD, stripline, tr 0.5 ns, 0.25 Sr, 1/20 max length freq in          0.84306        0.84306        0.84306     0.00%
+OK   frequency input 1 MHz, 1/7                   wavelength air in       11802.85268    11802.85268    11802.85268     0.00%
+OK   frequency input 1 MHz, 1/7                   max length freq in       1686.12012     1686.12012     1686.12181     0.00%
+OK   frequency input 25 MHz, 1/7                  wavelength air in         472.11411      472.11411      472.11411     0.00%
+OK   frequency input 25 MHz, 1/7                  max length freq in         67.44480       67.44480       67.44487     0.00%
+OK   frequency input 100 MHz, 1/7                 wavelength air in         118.02853      118.02853      118.02853     0.00%
+OK   frequency input 100 MHz, 1/7                 max length freq in         16.86120       16.86120       16.86122     0.00%
+OK   frequency input 1000 MHz, 1/7                wavelength air in          11.80285       11.80285       11.80285     0.00%
+OK   frequency input 1000 MHz, 1/7                max length freq in          1.68612        1.68612        1.68612     0.00%
+OK   frequency input 5000 MHz, 1/7                wavelength air in           2.36057        2.36057        2.36057     0.00%
+OK   frequency input 5000 MHz, 1/7                max length freq in          0.33722        0.33722        0.33722     0.00%
+
+TOTAL: 265 / 265 values match Saturn (compat)   largest difference of our published formula: 1.68 %

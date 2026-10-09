@@ -1,0 +1,26 @@
+Reference data downloaded from the internet (2026-09-26)
+
+jlcpcb-pcb-capabilities.html / .txt   (local copies, not in the Git repository: the content belongs to JLCPCB)
+    https://jlcpcb.com/capabilities/pcb-capabilities
+    JLCPCB manufacturing capabilities page. Source of every DRC limit in the app
+    (track/clearance, drill, annular ring, slot, mask, silkscreen, edge...). The .txt is the page as plain text.
+
+jlcpcb-impedance.html / .txt          (local copies, not in the Git repository)
+    https://jlcpcb.com/impedance
+    JLCPCB standard stackup tables (4 and 6 layers, 1.6 mm). Used to cross-check stackups.json.
+
+PCB assembly fees used for the cost estimate (JlcCost.cs):
+    https://jlcpcb.com/help/article/pcb-assembly-price   ("Last updated on Sep 09, 2026")
+
+stackups.json
+    JLC impedance calculator API:
+    POST https://jlcpcb.com/api/jlcTools/impedance/selectPageImpedanceDefaultTemplate
+         {"plateLayerNumber": N, "pageSize": 1000, "pageNum": 1..}
+    4-32 layers, the stackups JLC shows on its order page (957 entries). The first stackup of each combination
+    (layers, thickness, outer copper, inner copper) is JLC's default ("No requirement").
+    Keys: name, L (layers), thick (mm), outer / inner (oz), order, layers ([copper mm] or [1=core/0=prepreg, mm, Dk, material]).
+    Embedded in the app. To refresh:  Source\update-stackups.js
+
+JLC part information (manufacturer, MPN, stock, prices) is not stored here; the app queries it when building production files:
+    POST https://jlcpcb.com/api/overseas-pcb-order/v1/shoppingCart/smtGood/selectSmtComponentList
+         {"keyword": "C14663", "currentPage": 1, "pageSize": 5}
